@@ -5,11 +5,11 @@ when RULE_INIT {
 	#+ Configuration of RADIUS server global options
 	#
 
-	set static::RadSRV_rps_quota_interval			3				;# Per-Client Radius request quota interval in seconds
-	set static::RadSRV_udp_limit		 		500				;# Global Radius request quota limit
-	set static::RadSRV_udp_limit_interval 			1				;# Global Radius request quota interval in seconds
-	set static::RadSRV_udp_retransmission_timeout		30				;# UDP retransmission timeout in seconds
-	set static::RadSRV_challenge_timeout 			120				;# RADIUS CHALLENGE/RESPONSE session timeout in seconds
+	set static::RadSRV_rps_quota_interval            3      ;# Per-Client Radius request quota interval in seconds
+	set static::RadSRV_udp_limit                     500    ;# Global Radius request quota limit
+	set static::RadSRV_udp_limit_interval            1      ;# Global Radius request quota interval in seconds
+	set static::RadSRV_udp_retransmission_timeout    30     ;# UDP retransmission timeout in seconds
+	set static::RadSRV_challenge_timeout             180    ;# RADIUS CHALLENGE/RESPONSE session timeout in seconds
 
 	#
 	# Configuration of RADIUS server global options
@@ -21,8 +21,8 @@ when RULE_INIT {
 	#+ Initializing counters for TMM-specific per-request high speed quotas
 	#
 
-	set static::RadSRV_udp_count 				0				;# Dont change this value, its required to initialize the high speed packet limiters
-	set static::RadSRV_udp_timer 				[clock seconds]			;# Dont change this value, its required to initialize the high speed packet limiters
+	set static::RadSRV_udp_count                     0      ;# Dont change this value, its required to initialize the high speed packet limiters
+	set static::RadSRV_udp_timer                     [clock seconds] ;# Dont change this value, its required to initialize the high speed packet limiters
 
 	#
 	# Initializing counters for TMM-specific per-request high speed quotas
@@ -34,29 +34,28 @@ when RULE_INIT {
 	#+ Configuration of TCL script pre-compiler
 	#
 
-	set RadSRV_compiler(enable)				1				;# Enable TCL Script compiling (0-1 Bolean)
+	set RadSRV_compiler(enable)                      1      ;# Enable TCL Script compiling (0-1 Bolean)
 
-	set RadSRV_compiler(session_tracing_enable)		1				;# Enable session_state() export/import tracing (0-1 Bolean)
-	set RadSRV_compiler(istats_enable)			1				;# Enable istats performance counters (0-1 Bolean)
-	set RadSRV_compiler(compression_enable)			1 				;# Enable TCL variable compression (0-1 Bolean)
-	set RadSRV_compiler(compression_resolve_globals)	1				;# Enable static::* variable resolving (0-1 Bolean)
-	set RadSRV_compiler(remove_unnecessary_lines)		1				;# Enable to remove empty or unnecessary lines of code
+	set RadSRV_compiler(session_tracing_enable)      0      ;# Enable session_state() export/import tracing (0-1 Bolean)
+	set RadSRV_compiler(istats_enable)               1      ;# Enable istats performance counters (0-1 Bolean)
+	set RadSRV_compiler(compression_enable)          1      ;# Enable TCL variable compression (0-1 Bolean)
+	set RadSRV_compiler(compression_resolve_globals) 1      ;# Enable static::* variable resolving (0-1 Bolean)
+	set RadSRV_compiler(remove_unnecessary_lines)    1      ;# Enable to remove empty or unnecessary lines of code
 
-	set RadSRV_compiler(log_enable)				1				;# Enable logging (0-1 Bolean)
-	set RadSRV_compiler(log_prefix)				"RadSRV : \[virtual\] : "	;# Configure a common log-prefix. Escape TCL commands/variables to allow a execution/substitution during run-time.  
-	set RadSRV_compiler(log_level)				6				;# Include the log-lines up to log-level (0-8 See description below)
-												;#
-												;#	0	Emergency	Not used by this iRule
-												;#	1	Alert		Local TMM -subtable discovery
-												;#	2	Critical	Not used by this iRule
-												;#	3	Error		Not used by this iRule
-												;#	4	Warning		Configuration Issues
-												;#	5	Notice		Accounting Information (Accept/Reject)
-												;#	6	Informational	Requests, responses and preemptive rejects
-												;#	7	Debug		Only important debug messages
-												;#	8	Trace		Line-by-Line debug messages
+	set RadSRV_compiler(log_enable)                  1      ;# Enable logging (0-1 Bolean)
+	set RadSRV_compiler(log_prefix)                  "RadSRV : \[virtual\] : " ;# Configure a common log-prefix. Escape TCL commands/variables to allow a execution/substitution during run-time.  
+	set RadSRV_compiler(log_level)                   5      ;# Include the log-lines up to log-level (0-8 See description below)
+	                                                        ;#	0			Emergency				Not used by this iRule
+	                                                        ;#	1			Alert					Local TMM -subtable discovery
+	                                                        ;# 	2			Critical				Not used by this iRule
+	                                                        ;#	3			Error					Not used by this iRule
+	                                                        ;#	4			Warning					Configuration Issues
+	                                                        ;#	5			Notice					Accounting Information (Accept/Reject)
+	                                                        ;#	6			Informational			Requests, responses and preemptive rejects
+	                                                        ;#	7			Debug					Only important debug messages
+	                                                        ;#	8			Trace					Line-by-Line debug messages
 
-	set RadSRV_compiler(perform_local_tmm_discovery)	0				;# DEBUG Mode: Perform TMM local table discovery on each RADIUS request (0-1 Bolean)
+	set RadSRV_compiler(perform_local_tmm_discovery)	0							;# DEBUG Mode: Perform TMM local table discovery on each RADIUS request (0-1 Bolean)
 
 	#
 	# Configuration of TCL script pre-compiler
@@ -147,9 +146,9 @@ set static::RadSRV_PreProcessor {
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	# |  Attr1-Code   |  Attr1-Length |         Attr1-Value           |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	# |  Attr1-Value (cont)           |  AttrN-Code   |  AttrN-Length |
+	# |  Attr1-Value (cont) .       |  AttrN-Code   |  AttrN-Length |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	# |                          AttrN-Value (cont) .                 |
+	# |  					   AttrN-Value (cont) .                 |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	# |  AttrN-Value (cont) .
 
@@ -185,10 +184,10 @@ set static::RadSRV_PreProcessor {
 	#log8 "Extracting the RADIUS request code, ID, length and authenticator fields."
 
 	binary scan [UDP::payload] caSa16\
-					RadSRV(request_code)\
-					RadSRV(request_id)\
-					RadSRV(request_length)\
-					RadSRV(request_authenticator)
+		RadSRV(request_code)\
+		RadSRV(request_id)\
+		RadSRV(request_length)\
+		RadSRV(request_authenticator)
 
 	#
 	# Handler for RADIUS request encapsulation parsing
@@ -236,30 +235,53 @@ set static::RadSRV_PreProcessor {
 		#+ Handler for RADIUS response rejected construction and sending
 		#
 
-		#log6 "Constructing and sending a RADIUS reject response to the RADIUS client."
+		#log6 "Constructing HMAC-based message authenticator attribute."
+
+		set RadSRV(response_attribute_message_authenticator) [binary format cca*\
+			80\
+			18\
+			[CRYPTO::sign -alg hmac-md5 -key $client_config(shared_key)\
+				[binary format caSa16cca*cca*\
+					3\
+					$RadSRV(request_id)\
+					84\
+					$RadSRV(request_authenticator)\
+					80\
+					18\
+					"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"\
+					18\
+					46\
+					"ACCESS REJECTED: RADIUS request is too large"\
+				]\
+			]\
+		]
+
+		#log7 "Constructing the RADIUS response for the RADIUS client including the HMAC-based message authenticator attribute."
 		#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_Response_REJECT" 1
 		#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_UDP_Packet_Send" 1
 
-		UDP::respond [binary format caSa16cca*\
-							3\
-							$RadSRV(request_id)\
-							66\
-							[md5\
-								[binary format caSa16cca*a*\
-											3\
-											$RadSRV(request_id)\
-											66\
-											$RadSRV(request_authenticator)\
-											18\
-											46\
-											"ACCESS REJECTED: RADIUS request is too large"\
-											$client_config(shared_key)\
-								]\
-							]\
-							18\
-							46\
-							"ACCESS REJECTED: RADIUS request is too large"\
-			     ]
+		UDP::respond [binary format caSa16a*cca*\
+			3\
+			$RadSRV(request_id)\
+			84\
+			[md5\
+				[binary format caSa16a*cca*a*\
+					3\
+					$RadSRV(request_id)\
+					84\
+					$RadSRV(request_authenticator)\
+					$RadSRV(response_attribute_message_authenticator)\
+					18\
+					46\
+					"ACCESS REJECTED: RADIUS request is too large"\
+					$client_config(shared_key)\
+				]\
+			]\
+			$RadSRV(response_attribute_message_authenticator)\
+			18\
+			46\
+			"ACCESS REJECTED: RADIUS request is too large"\
+		]
 
 		#log8 "Flushing UDP request buffer and exiting the iRule."
 
@@ -330,12 +352,12 @@ set static::RadSRV_PreProcessor {
 
 	if { $RadSRV(payload_offset) != $RadSRV(request_length) } then {
 
-			#log6 "The RADIUS attribute(s) received from RADIUS client \"[IP::client_addr]\" are fragmented. Silently discard the request."
-			#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_Request_Malformed" 1
-			#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_UDP_Packet_Drop" 1
+		#log6 "The RADIUS attribute(s) received from RADIUS client \"[IP::client_addr]\" are fragmented. Silently discard the request."
+		#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_Request_Malformed" 1
+		#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_UDP_Packet_Drop" 1
 
-			UDP::drop
-			return
+		UDP::drop
+		return
 
 	}
 
@@ -438,13 +460,13 @@ set static::RadSRV_PreProcessor {
 	#log8 "Constructing binary RADIUS request table label for \"Local IP+Source IP+Source Port+Request ID+Request Authenticator\""
 
 	set RadSRV(request_state_label) [binary format a*c4c4Iaa*\
-								"RadSRV_"\
-								[split [getfield [IP::local_addr] "%" 1] "."]\
-								[split [getfield [IP::client_addr] "%" 1] "."]\
-								[UDP::client_port]\
-								$RadSRV(request_id)\
-								$RadSRV(request_authenticator)\
-					]
+		"RadSRV_"\
+		[split [getfield [IP::local_addr] "%" 1] "."]\
+		[split [getfield [IP::client_addr] "%" 1] "."]\
+		[UDP::client_port]\
+		$RadSRV(request_id)\
+		$RadSRV(request_authenticator)\
+	]
 
 	#log8 "Trying to exclusively set our request timestamp value into \"Local IP+Source IP+Source Port+Request ID+Request Authenticator\" session table."
 
@@ -465,14 +487,14 @@ set static::RadSRV_PreProcessor {
 		#log8 "CATCH: Checking if a local TMM core -subtable label has already been discovered by accesing the runtime generated variable \"\$static::local_tmm_subtable\""
 
 		set RadSRV(request_state) [table set\
-							-notouch\
-							-excl\
-							-subtable $static::local_tmm_subtable\
-							$RadSRV(request_state_label)\
-							"recv|$RadSRV(request_timestamp)"\
-							indef\
-							$static::RadSRV_udp_retransmission_timeout\
-					  ]
+			-notouch\
+			-excl\
+			-subtable $static::local_tmm_subtable\
+			$RadSRV(request_state_label)\
+			"recv|$RadSRV(request_timestamp)"\
+			indef\
+			$static::RadSRV_udp_retransmission_timeout\
+		]
 
 		#log8 "CATCH: The local TMM core -subtable label has already been discovered. The local TMM core subtable lable is \"$static::local_tmm_subtable\"."
 
@@ -526,14 +548,14 @@ set static::RadSRV_PreProcessor {
 		#log8 "Trying again to exclusively set our request timestamp value into \"Local IP+Source IP+Source Port+Request ID+Request Authenticator\" session table." 
 
 		set RadSRV(request_state) [table set\
-							-notouch\
-							-excl\
-							-subtable $static::local_tmm_subtable\
-							$RadSRV(request_state_label)\
-							"recv|$RadSRV(request_timestamp)"\
-							indef\
-							$static::RadSRV_udp_retransmission_timeout\
-					  ]
+			-notouch\
+			-excl\
+			-subtable $static::local_tmm_subtable\
+			$RadSRV(request_state_label)\
+			"recv|$RadSRV(request_timestamp)"\
+			indef\
+			$static::RadSRV_udp_retransmission_timeout\
+		]
 
 		#
 		# Handler for TCL [catch] excemption command retry
@@ -593,11 +615,13 @@ set static::RadSRV_PreProcessor {
 	#+ Handler for RADIUS proxy-state attribute relaying
 	#
 
-	#log8 "Checking if RADIUS request contains proxy-state attribute(s) to support RADIUS responses through RADIUS proxy servers."
+	#log8 "Checking if RADIUS client is eligible to send Proxy-State attribute(s) and if the RADIUS request contains Proxy-State attribute(s) to support RADIUS responses through RADIUS proxy servers."
 
-	if { [RADIUS::avp 33] ne "" } then {
+	if { ( $client_config(require_hmac) > 0 ) 
+	 and ( [RADIUS::avp 33] ne "" ) } then {
 
-		#log8 "The RADIUS request contains proxy-state attribute(s). Skipping through the individual proxy-state attributes from start to end of the RADIUS request."
+		#log8 "The RADIUS client is eligible to send Proxy-State attribute(s) and the RADIUS request contains proxy-state attribute(s)."
+		#log8 "Skipping through the individual proxy-state attributes from start to end of the RADIUS request."
 		#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_Request_ProxyState_Relaying" 1
 
 		for { set RadSRV(x) 0 } { [RADIUS::avp 33 index $RadSRV(x)] ne "" } { incr RadSRV(x) } {
@@ -605,9 +629,10 @@ set static::RadSRV_PreProcessor {
 			#log8 "Found a proxy-state attribute. Constructing a coresponding proxy-state RADIUS response attribute."
 
 			append RadSRV(response_attributes_field) [binary format cca*\
-										33\
-										[expr { 2 + [string length [RADIUS::avp 33 index $RadSRV(x)]] }]\
-										[RADIUS::avp 33 index $RadSRV(x)] ]
+				33\
+				[expr { 2 + [string length [RADIUS::avp 33 index $RadSRV(x)]] }]\
+				[RADIUS::avp 33 index $RadSRV(x)]\
+			]
 
 		}
 
@@ -615,7 +640,7 @@ set static::RadSRV_PreProcessor {
 
 	} else {
 
-		#log7 "The RADIUS request does not contain any proxy-state attribute(s)."
+		#log7 "The RADIUS client is either not eligible to send Proxy-State attribute(s) or the RADIUS request does not contain any proxy-state attribute(s)."
 
 		set RadSRV(response_attributes_field) ""
 
@@ -670,35 +695,59 @@ set static::RadSRV_PreProcessor {
 			#+ Handler for RADIUS response construction
 			#
 
-			#log8 "Calculating the total length of the RADIUS response (RADIUS encapsulation length + static attributes length + dynamic attribute length."
+			#log8 "Calculating the total length of the RADIUS response (RADIUS encapsulation length + Message Authenticatior attribute length + static attribute length + dynamic attribute length."
 
-			set RadSRV(response_length) [expr { 20 + 43 + [string length $RadSRV(response_attributes_field)] }]
+			set RadSRV(response_length) [expr { 20 + 18 + 43 + [string length $RadSRV(response_attributes_field)]  }]
 
-			#log8 "Constructing RADIUS reject response for the RADIUS client."
+			#log8 "Constructing HMAC-based message authenticator attribute."
+
+			set RadSRV(response_attribute_message_authenticator) [binary format cca*\
+				80\
+				18\
+				[CRYPTO::sign -alg hmac-md5 -key $client_config(shared_key)\
+					[binary format caSa16cca*cca*a*\
+						3\
+						$RadSRV(request_id)\
+						$RadSRV(response_length)\
+						$RadSRV(request_authenticator)\
+						80\
+						18\
+						"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"\
+						18\
+						43\
+						"ACCESS REJECTED: RADIUS session timed out"\
+						$RadSRV(response_attributes_field)\
+					]\
+				]\
+			]
+
+			#log7 "Constructing the RADIUS reject response including the HMAC-based message authenticator attribute."
 			#istats ISTATS::incr "ltm.virtual [virtual name] c RadSRV_Response_REJECT" 1
 
-			set RadSRV(response_payload) [binary format caSa16cca*a*\
-										3\
-										$RadSRV(request_id)\
-										$RadSRV(response_length)\
-										[md5\
-											[binary format caSa16cca*a*a*\
-															3\
-															$RadSRV(request_id)\
-															$RadSRV(response_length)\
-															$RadSRV(request_authenticator)\
-															18\
-															43\
-															"ACCESS REJECTED: RADIUS session timed out"\
-															$RadSRV(response_attributes_field)\
-															$client_config(shared_key)\
-											]\
-										]\
-										18\
-										43\
-										"ACCESS REJECTED: RADIUS session timed out"\
-										$RadSRV(response_attributes_field)\
-						      ]
+			set RadSRV(response_payload)[binary format caSa16a*cca*\
+				3\
+				$RadSRV(request_id)\
+				$RadSRV(response_length)\
+				[md5\
+					[binary format caSa16a*cca*a*a*\
+						3\
+						$RadSRV(request_id)\
+						$RadSRV(response_length)\
+						$RadSRV(request_authenticator)\
+						$RadSRV(response_attribute_message_authenticator)\
+						18\
+						43\
+						"ACCESS REJECTED: RADIUS session timed out"\
+						$RadSRV(response_attributes_field)\
+						$client_config(shared_key)\
+					]\
+				]\
+				$RadSRV(response_attribute_message_authenticator)\
+				18\
+				43\
+				"ACCESS REJECTED: RADIUS session timed out"\
+				$RadSRV(response_attributes_field)\
+			]
 
 			#log8 "Successfully constructed RADIUS reject response for the RADIUS client."
 
@@ -769,20 +818,21 @@ set static::RadSRV_PreProcessor {
 		#log8 "Chunking and converting the encrypted password value into two subsequent 64-bit integer values."
 
 		binary scan [RADIUS::avp 2] WW\
-						RadSRV(encrypted_password_64bit_chunk_1)\
-						RadSRV(encrypted_password_64bit_chunk_2)
+			 RadSRV(encrypted_password_64bit_chunk_1)\
+			 RadSRV(encrypted_password_64bit_chunk_2)
 
 		#log8 "Calculating the 128-bit encryption key using the RADIUS-Shared-Secret and the random value provided in the RADIUS request authenticator field."
 		#log8 "Chunking and converting the generated 128-bit encryption key into two 64-bit integer values."
 
 		binary scan [md5 "$client_config(shared_key)$RadSRV(request_authenticator)"] WW\
-												RadSRV(encryption_key_64bit_chunk_1)\
-												RadSRV(encryption_key_64bit_chunk_2)
+			RadSRV(encryption_key_64bit_chunk_1)\
+			RadSRV(encryption_key_64bit_chunk_2)
 
 		#log8 "Performing XOR operation with the corresponding cipher block / encryption key 64-bit integer values."
 
-		lappend RadSRV(plaintext_password_64bit_chunks) [expr { $RadSRV(encrypted_password_64bit_chunk_1) ^ $RadSRV(encryption_key_64bit_chunk_1) }]\
-														[expr { $RadSRV(encrypted_password_64bit_chunk_2) ^ $RadSRV(encryption_key_64bit_chunk_2) }]
+		lappend RadSRV(plaintext_password_64bit_chunks) \
+			[expr { $RadSRV(encrypted_password_64bit_chunk_1) ^ $RadSRV(encryption_key_64bit_chunk_1) }]\
+			[expr { $RadSRV(encrypted_password_64bit_chunk_2) ^ $RadSRV(encryption_key_64bit_chunk_2) }]
 
 		#log8 "Converting the two decrypted 64-bit integer password values to their binary representation while removing possible paddings used to fill the cipher block."
 
@@ -810,17 +860,23 @@ set static::RadSRV_PreProcessor {
 			#log8 "Calculating the 128-bit encryption key using the RADIUS-Shared-Secret and current key seed as input."
 			#log8 "Chunking and converting the generated 128-bit encryption key into two 64-bit integer values."
 
-			binary scan [md5 "$client_config(shared_key)$RadSRV(encryption_iv)"] WW RadSRV(encryption_key_64bit_chunk_1) RadSRV(encryption_key_64bit_chunk_2)
+			binary scan [md5 "$client_config(shared_key)$RadSRV(encryption_iv)"] WW \
+				RadSRV(encryption_key_64bit_chunk_1)\
+				RadSRV(encryption_key_64bit_chunk_2)
 
 			#log8 "Performing XOR operation with the corresponding cipher block / encryption key 64-bit integer values."
 			#log8 "Appending the retrieved plaintext 64-bit chunks to the list of already decrypted values."
 
-			lappend RadSRV(plaintext_password_64bit_chunks) [expr { $RadSRV(encrypted_password_64bit_chunk_1) ^ $RadSRV(encryption_key_64bit_chunk_1) }]\
-									[expr { $RadSRV(encrypted_password_64bit_chunk_2) ^ $RadSRV(encryption_key_64bit_chunk_2) }]
+			lappend RadSRV(plaintext_password_64bit_chunks) \
+				[expr { $RadSRV(encrypted_password_64bit_chunk_1) ^ $RadSRV(encryption_key_64bit_chunk_1) }]\
+				[expr { $RadSRV(encrypted_password_64bit_chunk_2) ^ $RadSRV(encryption_key_64bit_chunk_2) }]
 
 			#log8 "Setting the encryption key seed for the next cipher block to the cipher value of the current cipher block."
 
-			set RadSRV(encryption_iv) [binary format WW $RadSRV(encrypted_password_64bit_chunk_1) $RadSRV(encrypted_password_64bit_chunk_2)]
+			set RadSRV(encryption_iv) [binary format WW \
+				$RadSRV(encrypted_password_64bit_chunk_1)\
+				$RadSRV(encrypted_password_64bit_chunk_2)
+			]
 
 		}
 
@@ -974,7 +1030,7 @@ set static::RadSRV_PostProcessor {
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	# |       Attr1-Value (cont)      |  AttrN-Code   |  AttrN-Length |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	# |                        AttrN-Value (cont)                     |
+	# |  					   AttrN-Value (cont)                     |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	# |  AttrN-Value (cont) .
 
@@ -1057,10 +1113,10 @@ set static::RadSRV_PostProcessor {
 						#log8 "Convert the attribute value from IPv4-CIDR notation to its binary representation."
 
 						set RadSRV(response_attribute_value) [binary format ccc4\
-													0\
-													[findstr $RadSRV(response_attribute_value) "/" 1]\
-													[split [substr $RadSRV(response_attribute_value) 0 "/"] "."]\
-										     ]
+							0\
+							[findstr $RadSRV(response_attribute_value) "/" 1]\
+							[split [substr $RadSRV(response_attribute_value) 0 "/"] "."]\
+						]
 
 					}
 					"ipv6" {
@@ -1076,10 +1132,10 @@ set static::RadSRV_PostProcessor {
 
 						set RadSRV(response_attribute_mask)  [findstr $RadSRV(response_attribute_value) "/" 1]
 						set RadSRV(response_attribute_value) [binary format ccH[expr { 2 + int(( $RadSRV(response_attribute_value) - 1) / 8) * 2 }]\
-																			0\
-																			[findstr $RadSRV(response_attribute_value) "/" 1]\
-																			[join [split [substr $RadSRV(response_attribute_value) 0 "/" ] ":"] ""]\
-										     ]
+							0\
+							[findstr $RadSRV(response_attribute_value) "/" 1]\
+							[join [split [substr $RadSRV(response_attribute_value) 0 "/" ] ":"] ""]\
+						]
 
 					}
 					default {
@@ -1093,11 +1149,10 @@ set static::RadSRV_PostProcessor {
 				#log8 "Constructing the RADIUS response attribute and adding it to the list of existing response attributes."
 
 				append RadSRV(response_attributes_field) [binary format cca*\
-												$RadSRV(response_attribute_type)\
-												[expr { 2 + [string length $RadSRV(response_attribute_value)] }]\
-												$RadSRV(response_attribute_value)\
-									 ]
-
+					$RadSRV(response_attribute_type)\
+					[expr { 2 + [string length $RadSRV(response_attribute_value)] }]\
+					$RadSRV(response_attribute_value)\
+				]
 
 				#log8 "Checking if another attribute needs to be insert."
 
@@ -1137,64 +1192,56 @@ set static::RadSRV_PostProcessor {
 	# |                           (16 bytes)                          |
 	# |                                                               |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	# |     80 (ID)   |   18 (Length) |  Mandatory HMAC Checksum...	  |
+	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	# |  ... Mandatory HMAC Checksum  (16 bytes)                      |
+	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	# |                   Response Attributes (X bytes)               |
 	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	# |     80 (ID)   |   18 (Length) |  Optional HMAC Checksum...	  |
-	# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	# |  Optional HMAC Checksum  (16 bytes)...
 
-	#log8 "Calculating the total length of the RADIUS response (RADIUS encapsulation length + dynamic attribute length)."
+	#log8 "Calculating the total length of the RADIUS response (RADIUS encapsulation length + HMAC-based message authenticator attribute length + dynamic attribute length)."
 
-	set RadSRV(response_length) [expr { 20 + [string length $RadSRV(response_attributes_field)] }]
+	set RadSRV(response_length) [expr { 20 + 18 + [string length $RadSRV(response_attributes_field)] }]
 
-	#log8 "Checking if HMAC-based message authenticator attribute usage is required for the RADIUS client."
+	#log8 "Constructing the HMAC-based message authenticator attribute value for the RADIUS response. Performing HMAC-MD5 calculation using the client shared key on the RADIUS response packet including the initialized message authenticator attribute (16 octets of zero)."
 
-	if { $client_config(require_hmac) == 2 } then {
+	set RadSRV(response_attribute_message_authenticator) [binary format cca*\
+		80\
+		18\
+		[CRYPTO::sign -alg hmac-md5 -key $client_config(shared_key)\
+			[binary format caSa16cca*a*\
+				$client_response(code)\
+				$RadSRV(request_id)\
+				$RadSRV(response_length)\
+				$RadSRV(request_authenticator)\
+				80\
+				18\
+				"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"\
+				$RadSRV(response_attributes_field)\
+			]\
+		]\
+	]
 
-		#log7 "HMAC-based RADIUS message authenticator usage is required. Calculating the RADIUS response message authenticator attribute."
-		#log8 "Performing HMAC-MD5 calculation using the client shared key on the RADIUS response packet including the initialized message authenticator attribute (16 octets of zero)."
+	#log7 "Constructing the RADIUS response for the RADIUS client including the HMAC-based message authenticator attribute."
 
-		append RadSRV(response_attributes_field) [binary format cca*\
-									80\
-									18\
-									[CRYPTO::sign -alg hmac-md5 -key $client_config(shared_key)\
-										[binary format caSa16a*cca*\
-													$client_response(code)\
-													$RadSRV(request_id)\
-													[incr RadSRV(response_length) 18]\
-													$RadSRV(request_authenticator)\
-													$RadSRV(response_attributes_field)\
-													80\
-													18\
-													"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"\
-										]\
-									]\
-							 ]
-
-	} else {
-
-		#log7 "HMAC-based message authenticator attribute usage is not required for this RADIUS client."
-
-	}
-
-	#log7 "Constructing a RADIUS response for the RADIUS client."
-
-	set RadSRV(response_payload) [binary format caSa16a*\
-							$client_response(code)\
-							$RadSRV(request_id)\
-							$RadSRV(response_length)\
-							[md5\
-								[binary format caSa16a*a*\
-											$client_response(code)\
-											$RadSRV(request_id)\
-											$RadSRV(response_length)\
-											$RadSRV(request_authenticator)\
-											$RadSRV(response_attributes_field)\
-											$client_config(shared_key)\
-								]\
-							]\
-							$RadSRV(response_attributes_field)\
-				     ]
+	set RadSRV(response_payload) [binary format caSa16a*a*\
+		$client_response(code)\
+		$RadSRV(request_id)\
+		$RadSRV(response_length)\
+		[md5\
+			[binary format caSa16a*a*a*\
+				$client_response(code)\
+				$RadSRV(request_id)\
+				$RadSRV(response_length)\
+				$RadSRV(request_authenticator)\
+				$RadSRV(response_attribute_message_authenticator)\
+				$RadSRV(response_attributes_field)\
+				$client_config(shared_key)\
+			]\
+		]\
+		$RadSRV(response_attribute_message_authenticator)\
+		$RadSRV(response_attributes_field)\
+	]
 
 	#
 	# Handler for RADIUS response construction
@@ -1265,55 +1312,55 @@ set static::RadSRV_PostProcessor {
 			# Note: Sorted in alphabetical order where each variable is truncated to a unique abbreviation to speed up variable lookups (cpu and memory savings).
 
 			lappend RadSRV_compiler(replace_map) \
-				" \]"						"\]"		\
-				RadSRV(encrypted_password_64bit_chunk_1)	"{ep641}"	\
-				RadSRV(encrypted_password_64bit_chunk_2)	"{ep642}"	\
-				RadSRV(encrypted_password_64bit_chunks)		"{ep64}"	\
-				RadSRV(encryption_key_64bit_chunk_1)		"{ek641}"	\
-				RadSRV(encryption_key_64bit_chunk_2)		"{ek642}"	\
-				RadSRV(encryption_iv)				"{iv}"		\
-				RadSRV(plaintext_password_64bit_chunks)		"{pp64}"	\
-				RadSRV(plaintext_password)			"{pp}"		\
-				RadSRV(payload_offset)				"{off}"		\
-				RadSRV(request_attribute_length)		"{qal}"		\
-				RadSRV(request_authenticator)			"{qa}"		\
-				RadSRV(request_code)				"{qc}"		\
-				RadSRV(request_hmac)				"{qh}"		\
-				RadSRV(request_id)				"{qi}"		\
-				RadSRV(request_state_label)			"{qsl}"		\
-				RadSRV(request_state)				"{qs}"		\
-				RadSRV(request_timestamp)			"{rt}"		\
-				RadSRV(request_length)				"{ql}"		\
-				RadSRV(request_state)				"{qs}"		\
-				RadSRV(response_attribute_type) 		"{rat}"		\
-				RadSRV(response_attribute_format) 		"{rafo}"	\
-				RadSRV(response_attribute_mask) 		"{ram}"		\
-				RadSRV(response_attribute_value) 		"{rav}"		\
-				RadSRV(response_attributes_field)		"{raf}"		\
-				RadSRV(response_length)				"{rl}"		\
-				RadSRV(response_payload)			"{rp}"		\
-				RadSRV(session_state_array)			"{ssa}"		\
-				RadSRV(session_state_variable) 			"{ssv}"		\
-				RadSRV(session_state_variable_value)		"{ssvv}"	\
-				RadSRV(x)					"{x}"		\
-				tmm(table_iterations)				"{ti}"		\
-				tmm(start_timestamp)				"{t1}"		\
-				tmm(stop_timestamp)				"{t2}"		\
-				tmm(x)						"{tx}"		\
-				"tmm_times"					"tt"		\
-				"tmm_local_"					"tmm_local_"	\
-				"ACCEPT"					"ACCEPT"	\
-				"CHALLENGE"					"CHALLENGE"	\
-				"REJECT"					"REJECT"	\
-				RadPOL(request_timestamp)			RadPOL(request_timestamp)	\
-				client_config(shared_key)			client_config(shared_key)	\
-				client_config(require_hmac)			client_config(require_hmac)	\
-				client_config(request_limit)			client_config(request_limit)	\
-				client_response(code)				client_response(code)		\
-				client_response(message)			client_response(message)	\
-				client_response(attributes)			client_response(attributes)	\
-				"session_state("				"session_state("		\
-				"static::local_tmm_subtable"			"static::local_tmm_subtable"
+				" \]"                                    "\]"   	\
+				RadSRV(encrypted_password_64bit_chunk_1) "{ep641}"	\
+				RadSRV(encrypted_password_64bit_chunk_2) "{ep642}"	\
+				RadSRV(encrypted_password_64bit_chunks)	 "{ep64}"	\
+				RadSRV(encryption_key_64bit_chunk_1)     "{ek641}"	\
+				RadSRV(encryption_key_64bit_chunk_2)     "{ek642}"	\
+				RadSRV(encryption_iv)                    "{iv}" 	\
+				RadSRV(plaintext_password_64bit_chunks)  "{pp64}"	\
+				RadSRV(plaintext_password)               "{pp}" 	\
+				RadSRV(payload_offset)                   "{off}"	\
+				RadSRV(request_attribute_length)         "{qal}"	\
+				RadSRV(request_authenticator)            "{qa}" 	\
+				RadSRV(request_code)                     "{qc}" 	\
+				RadSRV(request_hmac)                     "{qh}" 	\
+				RadSRV(request_id)                       "{qi}" 	\
+				RadSRV(request_state_label)              "{qsl}"	\
+				RadSRV(request_state)                    "{qs}" 	\
+				RadSRV(request_timestamp)                "{rt}" 	\
+				RadSRV(request_length)                   "{ql}" 	\
+				RadSRV(request_state)                    "{qs}" 	\
+				RadSRV(response_attribute_type)          "{rat}"	\
+				RadSRV(response_attribute_format)        "{rafo}"	\
+				RadSRV(response_attribute_mask)          "{ram}"	\
+				RadSRV(response_attribute_value)         "{rav}"	\
+				RadSRV(response_attributes_field)        "{raf}"	\
+				RadSRV(response_length)	                 "{rl}" 	\
+				RadSRV(response_payload)                 "{rp}" 	\
+				RadSRV(session_state_array)              "{ssa}"	\
+				RadSRV(session_state_variable)           "{ssv}"	\
+				RadSRV(session_state_variable_value)     "{ssvv}"	\
+				RadSRV(x)                                "{x}"  	\
+				tmm(table_iterations)                    "{ti}" 	\
+				tmm(start_timestamp)                     "{t1}" 	\
+				tmm(stop_timestamp)                      "{t2}" 	\
+				tmm(x)                                   "{tx}" 	\
+				"tmm_times"                               "tt"  	\
+				"tmm_local_"                              "tmm_local_"	\
+				"ACCEPT"                                  "ACCEPT"  	\
+				"CHALLENGE"                               "CHALLENGE"	\
+				"REJECT"                                  "REJECT"  	\
+				RadPOL(request_timestamp)                 RadPOL(request_timestamp)	\
+				client_config(shared_key)                 client_config(shared_key)	\
+				client_config(require_hmac)               client_config(require_hmac)	\
+				client_config(request_limit)              client_config(request_limit)	\
+				client_response(code)                     client_response(code)		\
+				client_response(message)                  client_response(message)	\
+				client_response(attributes)               client_response(attributes)	\
+				"session_state("                          "session_state("	\
+				"static::local_tmm_subtable"              "static::local_tmm_subtable"
 
 		}
 
@@ -1322,11 +1369,11 @@ set static::RadSRV_PostProcessor {
 			log -noname local0.debug "RadSRV compiler : (TMM[TMM::cmp_unit]): The resolving of static::* configuration options is enabled. Resolving the global variables and importing their values to the compression compile map."
 
 			lappend RadSRV_compiler(replace_map) \
-				"\$static::RadSRV_udp_limit_interval"		$static::RadSRV_udp_limit_interval		\
-				"\$static::RadSRV_udp_limit"			$static::RadSRV_udp_limit			\
+				"\$static::RadSRV_udp_limit_interval"			$static::RadSRV_udp_limit_interval			\
+				"\$static::RadSRV_udp_limit"					$static::RadSRV_udp_limit					\
 				"\$static::RadSRV_udp_retransmission_timeout"	$static::RadSRV_udp_retransmission_timeout	\
-				"\$static::RadSRV_challenge_timeout"		$static::RadSRV_challenge_timeout		\
-				"\$static::RadSRV_rps_quota_interval"		$static::RadSRV_rps_quota_interval
+				"\$static::RadSRV_challenge_timeout"			$static::RadSRV_challenge_timeout				\
+				"\$static::RadSRV_rps_quota_interval"			$static::RadSRV_rps_quota_interval
 
 		}
 
