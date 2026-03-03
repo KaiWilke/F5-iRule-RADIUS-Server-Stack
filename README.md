@@ -26,7 +26,7 @@ when CLIENT_DATA {
 		# String value used as RADIUS shared secret
 		set client_config(shared_key)      "MySecureSharedKeyString"
 
-		# Multi value to control HMAC-based Message authenticator attributes
+		# Boolean value to control HMAC-based Message authenticator attributes
 		set client_config(require_hmac)    1   
 
 		# Numeric value to limit RADIUS request per seconds
@@ -73,7 +73,7 @@ when CLIENT_DATA {
 The RADIUS Client section is responsible to identify the connecting RADIUS Client by its source IP address and to assign RADIUS Client specific settings. If a connecting RADIUS Client is unknown, the RADIUS Client section will simply `[UDP::drop]` and then return the iRule to silently discard the RADIUS request.
 The mandatory configuration settings include the RADIUS secret (via `$client_config(shared_key)`), an option to control the HMAC-based Message-Authenticator attribute usage (via `$client_config(require_hmac)`) and an option to enforce individual request limits for a given RADIUS Client (via `$client_config(request_limit)`).
 
-***Note:** The `$client_config(require_hmac)` variable controls the HMAC-based Message-Authenticator attribute usage for RADIUS requests and responses. If the variable is set to 0 (unsecure mode) the RADIUS Server Stack will not care about HMAC-based Message-Authenticator attributes in RADIUS requests and responses. If the variable is set to 1 (recommended mode) the RADIUS Server Stack will silently discard RADIUS requests with either a missing or an invalid HMAC-based Message-Authenticator attribute but will not include a HMAC-based Message-Authenticator attribute in its responses. If the value is set to 2 (slightly paranoid mode) the RADIUS Server Stack will silently discard RADIUS requests with either a missing or an invalid HMAC-based Message-Authenticator attribute and will additionally include a HMAC-based Message-Authenticator attribute in its responses.*
+***Note:** The `$client_config(require_hmac)` variable controls the HMAC-based Message-Authenticator attribute usage for RADIUS requests and responses. If the variable is set to 0 (unsecure mode) the RADIUS Server Stack will not care about HMAC-based Message-Authenticator attributes in RADIUS requests. If the variable is set to 1 (recommended mode) the RADIUS Server Stack will silently discard RADIUS requests with either a missing or an invalid HMAC-based Message-Authenticator attribute. Independently of the configured mode, the RADIUS Server Stack will always include a HMAC-based Message-Authenticator attribute in its responses.
 
 ***Note:** Instead of using an if-then-else syntax, as shown in the example above, you could also implement a `[switch]` or `[class lookup]` based syntax to assign settings for your individual RADIUS clients. You may also want to add an `[IP::addr]` based syntax to the RADIUS Client section to assign RADIUS Client settings based on IP address subnet masks.*
 
@@ -290,6 +290,12 @@ The following chapters are uses to describe development considerations as well a
 The RADIUS Server Stack has been designed, developed and intensively tested to allow stable operations on mission critical and hostile LTM environments. The entire RADIUS request payload gets verified by the RADIUS Server Stack Pre-Processor module to avoid annoying TCL stack traces caused by LTMs slightly unstable `[RADIUS::*]` commands. In addition, the maximum throughput of the RADIUS Server Stack as well as the maximum number of RADIUS requests for a single RADIUS Client can be restricted, to make sure that an unintended network flood or a bad guy can’t take down your LTM, by either exhausting LTMs CPU and memory resources or overloads your backend repositories.
 
 In addition, the implementation of the HMAC-based Message-Authenticator RADIUS protocol extension can be used to fully Pre-Authenticate the RADIUS requests before any memory intensive operation is performed or backend repositories are queried.
+
+The HMAC-based Message-Authenticator Attribute integration is based on the mechanics outlined in the RFC Draft “draft-ietf-radext-deprecating-radius-02” to mitigate RadiusBlast attacks. 
+
+The usage of Message-Authenticator-Attribute can be enforced for each RADIUS Client separately by adjusting the $client_config(require_hmac) variable in the RADIUS Client section. 
+
+Independently of the enforcement for received RADIUS request made by an individual RADIUS Client, a Message-Authenticator-Attribute is always sent by the RADIUS Server Stack as the first RADIUS attribute for all RADIUS-Responses (to avoid known Prefix Attacks).
 
 ## Performance
 
